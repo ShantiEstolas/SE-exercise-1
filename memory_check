@@ -1,0 +1,24 @@
+#!/bin/bash
+
+usage () { echo "Usage: $0 [-c <critical threshold>] [-w <warning threshold>] [-e <email address>]" 1>&2; exit 1;}
+shift $((OPTIND-1))
+while getopts ":c:w:e" o; do
+  case " ${o} " in
+    c)
+      echo "critical threshold"
+      ;;
+    w)
+      echo "warning threshold"
+      ;;
+    e)
+      echo "email@address.com"
+      ;;
+    *)
+      usage
+      ;;
+  esac
+done
+
+if [ -z "${s}" ] || [ -z "${w}"] || [ -z "$(e)"]; then
+  usage
+fi
