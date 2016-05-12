@@ -2,24 +2,29 @@
 
 usage () { echo "Usage: $0 [-c <critical threshold>] [-w <warning threshold>] [-e <email address>]" 1>&2; exit 1;}
 
-while getopts ":cwe" opt; do
+while getopts ":c:w:e:" opt; do
   case $opt in
     c)
-      echo "critical threshold"
+      crTh="$OPTARG"
       ;;
     w)
-      echo "warning threshold"
+      waTh="$OPTARG"
       ;;
     e)
-      echo "email@address.com"
+      emAd="$OPTARG"
       ;;
     *)
-      echo "Requires a parameter" >&2
+      echo "Requires a parameter" 
       usage
       ;;
   esac
 done
 shift $((OPTIND-1))
-if [ -z "${s}" ] || [ -z "${w}"] || [ -z "$(e)"]; then
+if [[ ! -z $crTh && ! -z $waTh && ! -z $emAd ]]; then
+  echo $crTh
+  echo $waTh
+  echo $emAd
+fi
+if [ -z "${crTh}" ] || [ -z "${wrTh}"] || [ -z "${emAd}"]; then
   usage
 fi
