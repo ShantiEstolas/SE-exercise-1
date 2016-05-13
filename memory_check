@@ -17,7 +17,7 @@ mem_check()
     ps axo ruser,%mem,comm,pid | sort -nr | head -n 11 >> topten.txt;
   else
   if [ $USED_MEMORY -ge $waTh -a $USED_MEMORY -lt $crTh ]; then
-    echo "1"
+    echo "1";
     
   else
   if [ $USED_MEMORY -lt $waTh -a $USED_MEMORY -ge 0 ]; then
