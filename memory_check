@@ -7,14 +7,15 @@ usage ()
 }
 mem_check()
 {
-  USED_MEMORY=$( free | grep Mem: | awk '{print $3/2 *100.0}');
-  if [[ $USED_MEMORY -ge $crTh && $USED_MEMORY -lt 100 ]]; then
+  USED_MEM_PERCNT=$( free | grep Mem: | awk '{print $3/2 *100.0}');
+  USED_MEMORY=${USED_MEM_PERCNT%.*}                                   #convert float to decimal
+  if [ $USED_MEMORY -ge $crTh -a $USED_MEMORY -lt 100 ]; then
     echo "2";
   else
-  if [[ $USED_MEMORY -ge $waTh && $USED_MEMORY -lt $crTh ]]; then
+  if [ $USED_MEMORY -ge $waTh -a $USED_MEMORY -lt $crTh ]; then
     echo "1"
   else
-  if [[ $USED_MEMORY -lt $waTh && $USED_MEMORY -ge 0 ]]; then
+  if [ $USED_MEMORY -lt $waTh -a $USED_MEMORY -ge 0 ]; then
     echo "0";
   fi
   fi
@@ -25,6 +26,7 @@ validation()
 {
   echo "Percentage of critical threshold must be greater than warning threshold";
 }
+
 while getopts ":c:w:e:" opt; do
   case $opt in
     c)
@@ -42,6 +44,7 @@ while getopts ":c:w:e:" opt; do
       ;;
   esac
 done
+shift $((OPTIND-1))
 
 if [[ ! -z $crTh && ! -z $waTh && ! -z $emAd ]]; then
   if [ $crTh -ge $waTh ]; then
@@ -52,8 +55,6 @@ if [[ ! -z $crTh && ! -z $waTh && ! -z $emAd ]]; then
   fi
 fi
 
-if [ -z "${crTh}" ] || [ -z "${wrTh}"] || [ -z "${emAd}"]; then
+if [[ -z $crTh || -z $wrTh || -z $emAd ]]; then
   usage
 fi
-
-shift $((OPTIND-1))
